@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +31,20 @@ Auth::routes([
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    Route::resource('users', UserController::class)->only('edit', 'update');
+    Route::resource('users', UserController::class)->parameters([
+        'users' => 'userUuid',
+    ])->only('edit', 'update');
+
+    Route::resource('contactGroups', ContactGroupController::class)->parameters([
+        'contactGroups' => 'contactGroupUuid',
+    ]);
+
+    Route::get('/contactGroups/{contactGroupUuid}/delete', [ContactGroupController::class, 'delete'])->name('contactGroups.delete');
+
+    Route::resource('contactGroups.contacts', ContactController::class)->parameters([
+        'contactGroups' => 'contactGroupUuid',
+        'contacts' => 'contactUuid',
+    ]);
+
+    Route::get('/contactGroups/{contactGroupUuid}/contacts/{contactUuid}/delete', [ContactController::class, 'delete'])->name('contactGroups.contacts.delete');
 });

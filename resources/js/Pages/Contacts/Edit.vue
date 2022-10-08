@@ -1,10 +1,14 @@
 <template>
-    <Head title="Edit Profile" />
+
+    <Head title="Edit Contact" />
 
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
-                <h1 class="text-center mt-5">Edit Profile</h1>
+                <div class="text-center mt-5">
+                    <h1>Edit Contact</h1>
+                    <p>in <Link :href="route('contactGroups.show', { contactGroupUuid: contactGroup.uuid })" class="text-decoration-none">{{ contactGroup.name }}</Link></p>
+                </div>
                 <form @submit.prevent="submit">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -12,10 +16,9 @@
                         <span v-if="form.errors.name" v-text="form.errors.name" class="text-danger text-sm"></span>
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input id="email" name="email" type="email" class="form-control" placeholder="Enter Email" v-model="form.email" aria-describedby="emailHelp">
-                        <div id="emailHelp" class="form-text">You will need to verify a new email.</div>
-                        <span v-if="form.errors.email" v-text="form.errors.email" class="text-danger text-sm"></span>
+                        <label for="phone" class="form-label">Phone</label>
+                        <input id="phone" name="phone" type="text" class="form-control" placeholder="Enter Phone" v-model="form.phone">
+                        <span v-if="form.errors.phone" v-text="form.errors.phone" class="text-danger text-sm"></span>
                     </div>
                     <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">Save Changes</button>
                 </form>
@@ -27,21 +30,25 @@
 <script>
 export default {
     props: {
-        user: Object
+        contactGroup: Object,
+        contact: Object,
     },
 
     data() {
         return {
             form: this.$inertia.form({
-                name: this.user.name,
-                email: this.user.email,
+                name: this.contact.name,
+                phone: this.contact.phone,
             })
         };
     },
 
     methods: {
         submit() {
-            this.form.patch(route('users.update', {userUuid: this.user.uuid}));
+            this.form.patch(route('contactGroups.contacts.update', {
+                contactGroupUuid: this.contactGroup.uuid,
+                contactUuid: this.contact.uuid,
+            }));
         }
     }
 };

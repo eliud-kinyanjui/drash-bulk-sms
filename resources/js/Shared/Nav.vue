@@ -12,6 +12,9 @@
                         <li class="nav-item">
                             <Link class="nav-link" :href="route('home')">Home</Link>
                         </li>
+                        <li class="nav-item">
+                            <Link class="nav-link" :href="route('contactGroups.index')">Contact Groups</Link>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ $page.props.auth.user.name }}
@@ -22,7 +25,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><Link class="dropdown-item" :href="route('users.edit', { id: $page.props.auth.user.id})">Edit Profile</Link></li>
+                                <li><Link class="dropdown-item" :href="route('users.edit', { userUuid: $page.props.auth.user.uuid})">Edit Profile</Link></li>
                             </ul>
                         </li>
                         <li class="nav-item">
