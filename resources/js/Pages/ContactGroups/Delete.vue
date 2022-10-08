@@ -4,9 +4,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-5">
+                <BackLink />
                 <div class="text-center">
-                    <h1 class="mt-5 text-danger">Delete Contact Group?</h1>
-                    <h3>Name: <b>{{ contactGroup.name }}</b></h3>
+                    <h1>Delete Contact Group?</h1>
+                    <p>Name: <b>{{ contactGroup.name }}</b></p>
                 </div>
                 <form @submit.prevent="submit">
                     <button type="submit" class="btn btn-danger w-100" :disabled="form.processing">Delete Contact Group</button>
@@ -17,7 +18,11 @@
 </template>
 
 <script>
+import BackLink from './Shared/BackLink.vue';
+
 export default {
+    components: { BackLink },
+
     props: {
         contactGroup: Object
     },

@@ -5,7 +5,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
-                <h1 class="text-center mt-5">Create Contact Group</h1>
+                <BackLink />
+                <h1 class="text-center">Create Contact Group</h1>
                 <form @submit.prevent="submit">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -20,7 +21,11 @@
 </template>
 
 <script>
+import BackLink from './Shared/BackLink.vue';
+
 export default {
+    components: { BackLink },
+
     data() {
         return {
             form: this.$inertia.form({
