@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -39,4 +40,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 
     Route::get('/contactGroups/{contactGroupUuid}/delete', [ContactGroupController::class, 'delete'])->name('contactGroups.delete');
+
+    Route::resource('contactGroups.contacts', ContactController::class)->parameters([
+        'contactGroups' => 'contactGroupUuid',
+        'contacts' => 'contactUuid',
+    ]);
+
+    Route::get('/contactGroups/{contactGroupUuid}/contacts/{contactUuid}/delete', [ContactController::class, 'delete'])->name('contactGroups.contacts.delete');
 });

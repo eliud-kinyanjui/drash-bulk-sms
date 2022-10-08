@@ -14,4 +14,16 @@ class ContactGroup extends Model
         'name',
         'user_id',
     ];
+
+    protected $appends = ['total_contacts'];
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function getTotalContactsAttribute()
+    {
+        return $this->contacts()->count();
+    }
 }

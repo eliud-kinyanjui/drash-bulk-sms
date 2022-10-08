@@ -14,7 +14,7 @@ class ContactGroupController extends Controller
 
     public function index()
     {
-        $contactGroups = Auth::user()->contactGroups()->latest()->get();
+        $contactGroups = Auth::user()->contactGroups()->orderBy('name', 'asc')->get();
 
         return Inertia::render('ContactGroups/Index', [
             'contactGroups' => $contactGroups,
@@ -37,20 +37,18 @@ class ContactGroupController extends Controller
 
         ContactGroup::create($validData);
 
-        flash()->addSuccess('Contact group created successfully.');
-
         return redirect()->route('contactGroups.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ContactGroup  $contactGroup
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ContactGroup $contactGroup)
+    public function show($contactGroupUuid)
     {
-        //
+        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
+        $contacts = $contactGroup->contacts()->orderBy('name', 'asc')->get();
+
+        return Inertia::render('ContactGroups/Show', [
+            'contactGroup' => $contactGroup,
+            'contacts' => $contacts,
+        ]);
     }
 
     public function edit($contactGroupUuid)
@@ -72,8 +70,6 @@ class ContactGroupController extends Controller
 
         $contactGroup->update($validData);
 
-        flash()->addSuccess('Contact group updated successfully.');
-
         return redirect()->route('contactGroups.index');
     }
 
@@ -91,8 +87,6 @@ class ContactGroupController extends Controller
         $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
 
         $contactGroup->delete();
-
-        flash()->addSuccess('Contact group deleted successfully.');
 
         return redirect()->route('contactGroups.index');
     }

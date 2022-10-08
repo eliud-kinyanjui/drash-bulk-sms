@@ -13,17 +13,18 @@
                     <div class="col-12 col-md-4" v-for="group in contactGroups" :key="group.uuid">
                         <div class="card m-2">
                             <div class="card-body">
-                                <div class="text-end">
-                                    <Link :href="route('contactGroups.edit', { contactGroupUuid: group.uuid })" class="card-link" title="Edit Group">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </Link>
-                                    <Link :href="route('contactGroups.delete', { contactGroupUuid: group.uuid })" class="card-link text-danger" title="Delete Group">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </Link>
-                                </div>
-                                <h1 class="mb-0">{{ group.name }}</h1>
-                                <hr>
-                                <p>0 Contacts</p>
+                                <h3 class="mb-0">
+                                    <Link :href="route('contactGroups.show', { contactGroupUuid: group.uuid})" class="text-decoration-none">{{ group.name }}</Link>
+                                </h3>
+                                <p>{{ group.total_contacts }} Contacts</p>
+                            </div>
+                            <div class="card-footer text-end">
+                                <Link :href="route('contactGroups.edit', { contactGroupUuid: group.uuid })" class="card-link" title="Edit Group">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </Link>
+                                <Link :href="route('contactGroups.delete', { contactGroupUuid: group.uuid })" class="card-link text-danger" title="Delete Group">
+                                    <i class="fa-solid fa-trash"></i>
+                                </Link>
                             </div>
                         </div>
                     </div>
