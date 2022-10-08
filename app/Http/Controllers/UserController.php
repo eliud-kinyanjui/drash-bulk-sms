@@ -9,22 +9,22 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function edit($id)
+    public function edit($userUuid)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('uuid', $userUuid)->firstOrFail();
 
         return Inertia::render('Users/Edit', [
             'user' => [
-                'id' => $user->id,
+                'uuid' => $user->uuid,
                 'name' => $user->name,
                 'email' => $user->email,
             ],
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $userUuid)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('uuid', $userUuid)->firstOrFail();
 
         $validaData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -37,6 +37,6 @@ class UserController extends Controller
 
         $user->update($validaData);
 
-        return redirect()->route('users.edit', ['user' => $user->id]);
+        return redirect()->route('users.edit', ['userUuid' => $user->uuid]);
     }
 }

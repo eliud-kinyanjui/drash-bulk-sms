@@ -12,6 +12,7 @@
     <body>
         @inertia
 
+        <script src="https://kit.fontawesome.com/84e6af0da9.js" crossorigin="anonymous"></script>
         @routes
         @vite('resources/js/app.js')
     </body>
