@@ -14,10 +14,10 @@
                         <div class="card m-2">
                             <div class="card-body">
                                 <div class="text-end">
-                                    <Link :href="route('contactGroups.edit', { contactGroupUuid: group.uuid})" class="card-link">
+                                    <Link :href="route('contactGroups.edit', { contactGroupUuid: group.uuid })" class="card-link" title="Edit Group">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </Link>
-                                    <Link :href="route('contactGroups.delete', { contactGroupUuid: group.uuid})" class="card-link text-danger">
+                                    <Link :href="route('contactGroups.delete', { contactGroupUuid: group.uuid })" class="card-link text-danger" title="Delete Group">
                                         <i class="fa-solid fa-trash"></i>
                                     </Link>
                                 </div>
