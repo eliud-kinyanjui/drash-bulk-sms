@@ -9,6 +9,10 @@
                     <i class="fa-sharp fa-solid fa-plus"></i>
                     Add Contact
                 </Link>
+                <Link :href="route('contactGroups.messages.create', { contactGroupUuid: contactGroup.uuid })" class="btn btn-success mx-3" v-show="contactGroup.total_contacts">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Send Message
+                </Link>
                 <div class="row mt-3">
                     <div class="col-12 col-md-3" v-for="contact in contacts" :key="contact.uuid">
                         <div class="card m-2">
