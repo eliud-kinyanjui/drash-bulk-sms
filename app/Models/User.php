@@ -33,4 +33,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(ContactGroup::class);
     }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

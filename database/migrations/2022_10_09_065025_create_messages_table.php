@@ -15,7 +15,15 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
+            $table->unsignedBigInteger('contact_group_id');
+            $table->text('message');
+            $table->string('at_response');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('contact_group_id')->references('id')->on('contact_groups')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

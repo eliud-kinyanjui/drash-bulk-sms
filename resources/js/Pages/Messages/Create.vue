@@ -1,18 +1,21 @@
 <template>
-
     <Head title="Send Message" />
 
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
-                <div class="text-center mt-5">
-                    <h1>Send Message</h1>
-                    <p>
-                        to <Link :href="route('contactGroups.show', { contactGroupUuid: contactGroup.uuid })" class="text-decoration-none">{{ contactGroup.name }}</Link>
-                        ({{ contactGroup.total_contacts }} contacts)
-                    </p>
-                </div>
+                <h1 class="text-center mt-5">Send Message</h1>
                 <form @submit.prevent="submit">
+                    <div class="mb-3">
+                        <label for="contact_group" class="form-label">Contact Group</label>
+                        <select id="contact_group" name="contact_group" class="form-control" v-model="form.contact_group">
+                            <option value="">Select</option>
+                            <template v-for="group in contactGroups" :key="group.uuid">
+                                <option :value="group.id" v-if="group.total_contacts">{{ group.name }} ({{ group.total_contacts }} contacts)</option>
+                            </template>
+                        </select>
+                        <span v-if="form.errors.contact_group" v-text="form.errors.contact_group" class="text-danger text-sm"></span>
+                    </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">Message</label>
                         <textarea rows="5" id="message" name="message" class="form-control" placeholder="Enter your message here..." v-model="form.message" autofocus></textarea>
@@ -28,12 +31,13 @@
 <script>
 export default {
     props: {
-        contactGroup: Object
+        contactGroups: Object
     },
 
     data() {
         return {
             form: this.$inertia.form({
+                contact_group: '',
                 message: '',
             })
         };
@@ -41,7 +45,7 @@ export default {
 
     methods: {
         submit() {
-            this.form.post(route('contactGroups.messages.store', { contactGroupUuid:  this.contactGroup.uuid }));
+            this.form.post(route('messages.store'));
         }
     }
 };

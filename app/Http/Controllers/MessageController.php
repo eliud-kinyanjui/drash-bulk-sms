@@ -4,47 +4,43 @@ namespace App\Http\Controllers;
 
 use AfricasTalking\SDK\AfricasTalking;
 use App\Models\Message;
+use App\Models\MessageDetail;
+use App\Traits\Utilities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use Utilities;
+
     public function index()
     {
-        //
-    }
+        $messages = Auth::user()->messages()->with('contactGroup')->latest()->get();
 
-    public function create($contactGroupUuid)
-    {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
-
-        if (! $contactGroup->total_contacts) {
-            return redirect()->route('contactGroups.contacts.create', ['contactGroupUuid' => $contactGroup->uuid]);
-        }
-
-        return Inertia::render('Messages/Create', [
-            'contactGroup' => $contactGroup,
+        return Inertia::render('Messages/Index', [
+            'messages' => $messages,
         ]);
     }
 
-    public function store(Request $request, $contactGroupUuid)
+    public function create()
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
+        $contactGroups = Auth::user()->contactGroups()->orderBy('name', 'asc')->get();
 
-        if (! $contactGroup->total_contacts) {
-            return redirect()->route('contactGroups.contacts.create', ['contactGroupUuid' => $contactGroup->uuid]);
-        }
+        return Inertia::render('Messages/Create', [
+            'contactGroups' => $contactGroups,
+        ]);
+    }
 
+    public function store(Request $request)
+    {
         $validData = $request->validate([
+            'contact_group' => 'required',
             'message' => 'required|string|max:255',
         ]);
 
+        $contactGroup = Auth::user()->contactGroups()->findOrFail($validData['contact_group']);
         $contacts = [];
 
         foreach ($contactGroup->contacts as $contact) {
@@ -59,18 +55,50 @@ class MessageController extends Controller
             'message' => $validData['message'],
         ]);
 
-        dd($result);
+        $messageData = $result['data']->SMSMessageData;
+
+        DB::transaction(function () use ($contactGroup, $validData, $messageData) {
+            $message = Message::create([
+                'uuid' => $this->generateUuid(),
+                'contact_group_id' => $contactGroup->id,
+                'message' => $validData['message'],
+                'at_response' => $messageData->Message,
+                'user_id' => Auth::user()->id,
+            ]);
+
+            $messageDetails = [];
+
+            foreach ($messageData->Recipients as $recipient) {
+                $messageDetails[] = [
+                    'message_id' => $message->id,
+                    'at_status_code' => $recipient->statusCode,
+                    'at_number' => $recipient->number,
+                    'at_cost' => $recipient->cost,
+                    'at_status' => $recipient->status,
+                    'at_message_id' => $recipient->messageId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            MessageDetail::insert($messageDetails);
+        });
+
+        return redirect()->route('messages.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Message $message)
+    public function show($messageUuid)
     {
-        //
+        $message = Auth::user()
+            ->messages()
+            ->where('uuid', $messageUuid)
+            ->with('contactGroup')
+            ->with('messageDetails')
+            ->firstOrFail();
+
+        return Inertia::render('Messages/Show', [
+            'message' => $message,
+        ]);
     }
 
     /**

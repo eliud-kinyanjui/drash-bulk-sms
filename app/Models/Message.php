@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'uuid',
+        'contact_group_id',
+        'message',
+        'at_response',
+        'user_id',
+    ];
+
+    public function contactGroup()
+    {
+        return $this->belongsTo(ContactGroup::class);
+    }
+
+    public function messageDetails()
+    {
+        return $this->hasMany(MessageDetail::class);
+    }
 }

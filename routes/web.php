@@ -49,8 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/contactGroups/{contactGroupUuid}/contacts/{contactUuid}/delete', [ContactController::class, 'delete'])->name('contactGroups.contacts.delete');
 
-    Route::resource('contactGroups.messages', MessageController::class)->parameters([
-        'contactGroups' => 'contactGroupUuid',
+    Route::resource('messages', MessageController::class)->parameters([
         'messages' => 'messageUuid',
     ]);
 });
