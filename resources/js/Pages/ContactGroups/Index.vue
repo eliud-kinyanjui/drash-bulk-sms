@@ -11,7 +11,7 @@
                 </Link>
                 <div class="row">
                     <div class="col-12 col-md-4" v-for="group in contactGroups" :key="group.uuid">
-                        <div class="card m-2">
+                        <div class="card border-primary m-2">
                             <div class="card-body">
                                 <h3 class="mb-0">
                                     <Link :href="route('contactGroups.show', { contactGroupUuid: group.uuid})" class="text-decoration-none">{{ group.name }}</Link>

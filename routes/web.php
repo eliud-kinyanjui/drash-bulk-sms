@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,4 +48,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 
     Route::get('/contactGroups/{contactGroupUuid}/contacts/{contactUuid}/delete', [ContactController::class, 'delete'])->name('contactGroups.contacts.delete');
+
+    Route::resource('messages', MessageController::class)->parameters([
+        'messages' => 'messageUuid',
+    ]);
 });

@@ -11,7 +11,7 @@
                 </Link>
                 <div class="row mt-3">
                     <div class="col-12 col-md-3" v-for="contact in contacts" :key="contact.uuid">
-                        <div class="card m-2">
+                        <div class="card border-primary m-2">
                             <div class="card-body">
                                 <h3>{{ contact.name }}</h3>
                                 <p>{{ contact.phone }}</p>
