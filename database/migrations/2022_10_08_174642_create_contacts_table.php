@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone');
             $table->unsignedBigInteger('contact_group_id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('contact_group_id')->references('id')->on('contact_groups')->onDelete('cascade');
         });
