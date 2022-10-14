@@ -6,8 +6,6 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="stylesheet" href="{{ asset('assets/css/libs.bundle.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/css/theme.bundle.css') }}" />
         @vite('resources/sass/app.scss')
         @inertiaHead
     </head>
