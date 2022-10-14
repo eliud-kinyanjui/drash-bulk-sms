@@ -53,8 +53,6 @@ class HandleInertiaRequests extends Middleware
             ],
             'env' => [
                 'APP_NAME' => config('app.name'),
-                'LARAVEL_VERSION' => Application::VERSION,
-                'PHP_VERSION' => PHP_VERSION,
             ],
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
