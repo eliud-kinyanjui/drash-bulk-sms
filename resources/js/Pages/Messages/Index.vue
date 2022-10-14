@@ -15,7 +15,9 @@
                             <div class="card-header">
                                 {{ message.at_response }}
                                 <br>
-                                Contact Group: <Link :href="route('contactGroups.show', { contactGroupUuid: message.contact_group.uuid })" class="text-decoration-none">{{ message.contact_group.name }}</Link>
+                                Contact Group:
+                                <Link v-if="!message.contact_group.deleted_at" :href="route('contactGroups.show', { contactGroupUuid: message.contact_group.uuid })" class="text-decoration-none">{{ message.contact_group.name }}</Link>
+                                <span v-else>{{ message.contact_group.name }}</span>
                             </div>
                             <div class="card-body">
                                 <i>{{ message.message }}</i>

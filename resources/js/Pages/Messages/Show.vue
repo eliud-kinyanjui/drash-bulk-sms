@@ -13,7 +13,9 @@
                         <p>
                             Summary: <b>{{ message.at_response }}</b>
                             <br>
-                            Contact Group: <Link :href="route('contactGroups.show', { contactGroupUuid: message.contact_group.uuid })" class="text-decoration-none">{{ message.contact_group.name }}</Link>
+                            Contact Group:
+                            <Link v-if="!message.contact_group.deleted_at" :href="route('contactGroups.show', { contactGroupUuid: message.contact_group.uuid })" class="text-decoration-none">{{ message.contact_group.name }}</Link>
+                            <span v-else>{{ message.contact_group.name }}</span>
                         </p>
                     </div>
                 </div>
