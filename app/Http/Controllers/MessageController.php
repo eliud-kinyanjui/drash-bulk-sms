@@ -17,7 +17,12 @@ class MessageController extends Controller
 
     public function index()
     {
-        $messages = Auth::user()->messages()->with('contactGroup')->latest()->get();
+        $messages = Auth::user()->messages()
+            ->with(['contactGroup' => function ($query) {
+                $query->withTrashed();
+            }])
+            ->latest()
+            ->get();
 
         return Inertia::render('Messages/Index', [
             'messages' => $messages,
@@ -92,7 +97,9 @@ class MessageController extends Controller
         $message = Auth::user()
             ->messages()
             ->where('uuid', $messageUuid)
-            ->with('contactGroup')
+            ->with(['contactGroup' => function ($query) {
+                $query->withTrashed();
+            }])
             ->with('messageDetails')
             ->firstOrFail();
 
