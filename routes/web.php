@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,8 @@ Auth::routes([
     'verify' => true,
 ]);
 
+Route::post('mpesa/stk/callback', [PaymentController::class, 'stkCallback']);
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
@@ -52,4 +55,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('messages', MessageController::class)->parameters([
         'messages' => 'messageUuid',
     ]);
+
+    Route::resource('payments', PaymentController::class)->only('index', 'create', 'store');
 });
