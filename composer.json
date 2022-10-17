@@ -15,9 +15,12 @@
         "laravel/ui": "^4.0",
         "php-flasher/flasher-laravel": "^1.7",
         "safaricom/mpesa": "^1.0",
+        "symfony/http-client": "^6.1",
+        "symfony/mailgun-mailer": "^6.1",
         "tightenco/ziggy": "^1.5"
     },
     "require-dev": {
+        "deployer/deployer": "^7.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
