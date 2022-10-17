@@ -35,11 +35,16 @@ after('deploy:failed', 'deploy:unlock');
 
 desc('Start deploying the application...');
 
+task('npm:build', function () {
+    run('cd {{release_path}} && npm install && npm run build');
+});
+
 task('deploy', [
     'deploy:prepare',
     'rsync',
     'deploy:vendors',
     'deploy:shared',
+    'npm:build',
     'artisan:storage:link',
     'artisan:view:cache',
     'artisan:config:clear',
