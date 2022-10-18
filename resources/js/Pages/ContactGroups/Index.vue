@@ -25,6 +25,9 @@
                                 <Link :href="route('contactGroups.delete', { contactGroupUuid: group.uuid })" class="card-link text-danger" title="Delete Group">
                                     <i class="fa-solid fa-trash"></i>
                                 </Link>
+                                <Link :href="route('contactGroups.contacts.create', { contactGroupUuid: group.uuid })" class="card-link text-decoration-none">
+                                    Add Contact
+                                </Link>
                             </div>
                         </div>
                     </div>
