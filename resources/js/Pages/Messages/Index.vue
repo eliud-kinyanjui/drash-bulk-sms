@@ -11,18 +11,19 @@
                 </Link>
                 <div class="row">
                     <div class="col-12 col-md-4" v-for="message in messages" :key="message.uuid">
-                        <div class="card border border-primary">
+                        <div class="card border border-primary m-2">
                             <div class="card-header">
-                                {{ message.at_response }}
-                                <br>
-                                Contact Group:
+                                Sent to
                                 <Link v-if="!message.contact_group.deleted_at" :href="route('contactGroups.show', { contactGroupUuid: message.contact_group.uuid })" class="text-decoration-none">{{ message.contact_group.name }}</Link>
                                 <span v-else>{{ message.contact_group.name }}</span>
+                                {{ message.created_at }}
                             </div>
                             <div class="card-body">
                                 <i>{{ message.message }}</i>
                             </div>
                             <div class="card-footer text-end">
+
+                                &nbsp;
                                 <Link :href="route('messages.show', { messageUuid: message.uuid})" class="text-decoration-none">View Details</Link>
                             </div>
                         </div>

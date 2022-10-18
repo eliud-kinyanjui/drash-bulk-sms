@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Message extends Model
 {
@@ -24,5 +25,10 @@ class Message extends Model
     public function messageDetails()
     {
         return $this->hasMany(MessageDetail::class);
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->diffForHumans();
     }
 }
