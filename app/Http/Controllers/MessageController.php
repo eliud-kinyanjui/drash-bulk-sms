@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use AfricasTalking\SDK\AfricasTalking;
-use App\Models\Message;
-use App\Models\MessageDetail;
 use App\Traits\Utilities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +29,7 @@ class MessageController extends Controller
 
     public function create()
     {
-        $contactGroups = Auth::user()->contactGroups()->orderBy('name', 'asc')->get();
+        $contactGroups = $this->getContactGroups();
 
         return Inertia::render('Messages/Create', [
             'contactGroups' => $contactGroups,
@@ -63,18 +61,15 @@ class MessageController extends Controller
         $messageData = $result['data']->SMSMessageData;
 
         DB::transaction(function () use ($contactGroup, $validData, $messageData) {
-            $message = Message::create([
+            $message = Auth::user()->messages()->create([
                 'uuid' => $this->generateUuid(),
                 'contact_group_id' => $contactGroup->id,
                 'message' => $validData['message'],
                 'at_response' => $messageData->Message,
-                'user_id' => Auth::user()->id,
             ]);
 
-            $messageDetails = [];
-
-            foreach ($messageData->Recipients as $recipient) {
-                $messageDetails[] = [
+            $messageDetails = collect($messageData->Recipients)->map(function ($recipient) use ($message) {
+                return [
                     'message_id' => $message->id,
                     'at_status_code' => $recipient->statusCode,
                     'at_number' => $recipient->number,
@@ -84,9 +79,9 @@ class MessageController extends Controller
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
-            }
+            });
 
-            MessageDetail::insert($messageDetails);
+            $message->messageDetails()->insert($messageDetails->toArray());
         });
 
         return redirect()->route('messages.index');
@@ -106,39 +101,5 @@ class MessageController extends Controller
         return Inertia::render('Messages/Show', [
             'message' => $message,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Message $message)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Message $message)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Message $message)
-    {
-        //
     }
 }

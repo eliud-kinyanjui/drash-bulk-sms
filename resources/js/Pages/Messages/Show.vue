@@ -16,6 +16,8 @@
                             Contact Group:
                             <Link v-if="!message.contact_group.deleted_at" :href="route('contactGroups.show', { contactGroupUuid: message.contact_group.uuid })" class="text-decoration-none">{{ message.contact_group.name }}</Link>
                             <span v-else>{{ message.contact_group.name }}</span>
+                            <br>
+                            <i>Sent {{ message.created_at }}</i>
                         </p>
                     </div>
                 </div>

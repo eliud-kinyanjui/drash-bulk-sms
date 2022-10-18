@@ -2,29 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
 use App\Traits\Utilities;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ContactController extends Controller
 {
     use Utilities;
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     public function create($contactGroupUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
 
         return Inertia::render('Contacts/Create', [
             'contactGroup' => $contactGroup,
@@ -38,31 +26,19 @@ class ContactController extends Controller
             'phone' => 'required|numeric|digits:10',
         ]);
 
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
-
         $validData['uuid'] = $this->generateUuid();
-        $validData['contact_group_id'] = $contactGroup->id;
 
-        Contact::create($validData);
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
+
+        $contactGroup->contacts()->create($validData);
 
         return redirect()->route('contactGroups.show', ['contactGroupUuid' => $contactGroup->uuid]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact)
-    {
-        //
-    }
-
     public function edit($contactGroupUuid, $contactUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
-        $contact = $contactGroup->contacts()->where('uuid', $contactUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
+        $contact = $this->getContact($contactGroup, $contactUuid);
 
         return Inertia::render('Contacts/Edit', [
             'contactGroup' => $contactGroup,
@@ -77,8 +53,8 @@ class ContactController extends Controller
             'phone' => 'required|numeric|digits:10',
         ]);
 
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
-        $contact = $contactGroup->contacts()->where('uuid', $contactUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
+        $contact = $this->getContact($contactGroup, $contactUuid);
 
         $contact->update($validData);
 
@@ -87,8 +63,8 @@ class ContactController extends Controller
 
     public function delete($contactGroupUuid, $contactUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
-        $contact = $contactGroup->contacts()->where('uuid', $contactUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
+        $contact = $this->getContact($contactGroup, $contactUuid);
 
         return Inertia::render('Contacts/Delete', [
             'contactGroup' => $contactGroup,
@@ -98,11 +74,16 @@ class ContactController extends Controller
 
     public function destroy($contactGroupUuid, $contactUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
-        $contact = $contactGroup->contacts()->where('uuid', $contactUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
+        $contact = $this->getContact($contactGroup, $contactUuid);
 
         $contact->delete();
 
         return redirect()->route('contactGroups.show', ['contactGroupUuid' => $contactGroup->uuid]);
+    }
+
+    private function getContact($contactGroup, $contactUuid)
+    {
+        return $contactGroup->contacts()->where('uuid', $contactUuid)->firstOrFail();
     }
 }
