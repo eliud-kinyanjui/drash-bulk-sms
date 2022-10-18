@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ContactGroup;
 use App\Traits\Utilities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,16 +32,15 @@ class ContactGroupController extends Controller
         ]);
 
         $validData['uuid'] = $this->generateUuid();
-        $validData['user_id'] = Auth::user()->id;
 
-        ContactGroup::create($validData);
+        Auth::user()->contactGroups()->create($validData);
 
         return redirect()->route('contactGroups.index');
     }
 
     public function show($contactGroupUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
         $contacts = $contactGroup->contacts()->orderBy('name', 'asc')->get();
 
         return Inertia::render('ContactGroups/Show', [
@@ -53,7 +51,7 @@ class ContactGroupController extends Controller
 
     public function edit($contactGroupUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
 
         return Inertia::render('ContactGroups/Edit', [
             'contactGroup' => $contactGroup,
@@ -62,7 +60,7 @@ class ContactGroupController extends Controller
 
     public function update(Request $request, $contactGroupUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
 
         $validData = $request->validate([
             'name' => 'required|string|max:255',
@@ -75,7 +73,7 @@ class ContactGroupController extends Controller
 
     public function delete($contactGroupUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
 
         return Inertia::render('ContactGroups/Delete', [
             'contactGroup' => $contactGroup,
@@ -84,10 +82,15 @@ class ContactGroupController extends Controller
 
     public function destroy($contactGroupUuid)
     {
-        $contactGroup = Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
+        $contactGroup = $this->getContactGroup($contactGroupUuid);
 
         $contactGroup->delete();
 
         return redirect()->route('contactGroups.index');
+    }
+
+    private function getContactGroup($contactGroupUuid)
+    {
+        return Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
     }
 }

@@ -13,7 +13,6 @@ class ContactGroup extends Model
     protected $fillable = [
         'uuid',
         'name',
-        'user_id',
     ];
 
     protected $appends = ['total_contacts'];
