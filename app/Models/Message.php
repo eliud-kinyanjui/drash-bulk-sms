@@ -14,7 +14,6 @@ class Message extends Model
         'contact_group_id',
         'message',
         'at_response',
-        'user_id',
     ];
 
     public function contactGroup()

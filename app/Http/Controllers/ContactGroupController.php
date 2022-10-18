@@ -13,7 +13,7 @@ class ContactGroupController extends Controller
 
     public function index()
     {
-        $contactGroups = Auth::user()->contactGroups()->orderBy('name', 'asc')->get();
+        $contactGroups = $this->getContactGroups();
 
         return Inertia::render('ContactGroups/Index', [
             'contactGroups' => $contactGroups,

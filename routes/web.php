@@ -54,7 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('messages', MessageController::class)->parameters([
         'messages' => 'messageUuid',
-    ]);
+    ])->except('edit', 'update', 'destroy');
 
     Route::resource('payments', PaymentController::class)->only('index', 'create', 'store');
 });
