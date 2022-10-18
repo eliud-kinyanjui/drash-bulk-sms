@@ -14,6 +14,5 @@ class Contact extends Model
         'uuid',
         'name',
         'phone',
-        'contact_group_id',
     ];
 }

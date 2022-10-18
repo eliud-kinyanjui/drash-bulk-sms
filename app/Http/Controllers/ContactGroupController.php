@@ -88,9 +88,4 @@ class ContactGroupController extends Controller
 
         return redirect()->route('contactGroups.index');
     }
-
-    private function getContactGroup($contactGroupUuid)
-    {
-        return Auth::user()->contactGroups()->where('uuid', $contactGroupUuid)->firstOrFail();
-    }
 }
