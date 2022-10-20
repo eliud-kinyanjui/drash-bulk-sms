@@ -12,7 +12,6 @@ class PaymentRequest extends Model
     const UPDATED_AT = null;
 
     protected $fillable = [
-        'user_id',
         'phone',
         'amount',
         'merchant',
