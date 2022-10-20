@@ -13,7 +13,6 @@ class Payment extends Model
     const UPDATED_AT = null;
 
     protected $fillable = [
-        'user_id',
         'merchant',
         'checkout',
         'receipt',
@@ -21,6 +20,11 @@ class Payment extends Model
         'amount',
         'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function getCreatedAtAttribute($value)
     {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
+use App\Events\MpesaCallbackSaved;
 use App\Models\PaymentRequest;
 use App\Models\User;
 use App\Traits\Payments;
@@ -19,9 +19,11 @@ class PaymentController extends Controller
 
     public function index()
     {
-        $payments = Payment::latest()->get();
+        $user = Auth::user();
+        $payments = $user->payments()->latest()->get();
 
         return Inertia::render('Payments/Index', [
+            'user' => $user,
             'payments' => $payments,
         ]);
     }
@@ -44,8 +46,7 @@ class PaymentController extends Controller
 
         if (is_object($response)) {
             try {
-                PaymentRequest::create([
-                    'user_id' => Auth::user()->id,
+                Auth::user()->paymentRequests()->create([
                     'phone' => $phone,
                     'amount' => $validData['amount'],
                     'merchant' => $response->merchant,
@@ -95,8 +96,7 @@ class PaymentController extends Controller
                         $user = User::findOrFail($paymentRequest->user_id);
 
                         DB::transaction(function () use ($user, $meta, $paymentRequest) {
-                            Payment::create([
-                                'user_id' => $user->id,
+                            $payment = $user->payments()->create([
                                 'merchant' => $meta['merchantRequestID'],
                                 'checkout' => $meta['checkoutRequestID'],
                                 'receipt' => $meta['mpesaReceiptNumber'],
@@ -106,6 +106,8 @@ class PaymentController extends Controller
                             ]);
 
                             $paymentRequest->delete();
+
+                            MpesaCallbackSaved::dispatch($user, $payment);
                         });
 
                         Log::info('Payment entry saved.');
