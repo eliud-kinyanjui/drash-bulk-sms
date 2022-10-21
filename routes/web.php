@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\HomeController;
@@ -29,6 +30,9 @@ Route::get('/', function () {
 Auth::routes([
     'verify' => true,
 ]);
+
+Route::get('oauth/{driver}', [LoginController::class, 'redirectToProvider'])->name('social.oauth');
+Route::get('oauth/{driver}/callback', [LoginController::class, 'handleProviderCallback']);
 
 Route::post('mpesa/stk/callback', [PaymentController::class, 'stkCallback']);
 

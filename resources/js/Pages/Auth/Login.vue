@@ -4,7 +4,16 @@
     <div class="container">
         <div class="row justify-content-center vh-100 d-flex align-items-center">
             <div class="col-12 col-md-4">
+                <div v-if="flash.status" class="alert" :class="flash.status.type" role="alert">
+                    {{ flash.status.message }}
+                </div>
                 <h1 class="text-center">Login</h1>
+                <p class="border border-success p-3">
+                    <Link :href="route('social.oauth', 'google')" class="text-decoration-none">
+                        <i class="fa-brands fa-google"></i>
+                        Login with Google
+                    </Link>
+                </p>
                 <form @submit.prevent="submit">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
@@ -36,6 +45,10 @@
 <script>
 export default {
     layout: null,
+
+    props: {
+        flash: Object,
+    },
 
     data() {
         return {
