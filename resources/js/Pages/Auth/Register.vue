@@ -4,6 +4,12 @@
     <div class="container">
         <div class="row justify-content-center vh-100 d-flex align-items-center">
             <div class="col-12 col-md-4">
+                <p class="border border-success p-3 text-center">
+                    <Link :href="route('social.oauth', 'google')" class="text-decoration-none">
+                        <i class="fa-brands fa-google"></i>
+                        Signup with Google
+                    </Link>
+                </p>
                 <h1 class="text-center">Create Account</h1>
                 <form @submit.prevent="submit">
                     <div class="mb-3">
