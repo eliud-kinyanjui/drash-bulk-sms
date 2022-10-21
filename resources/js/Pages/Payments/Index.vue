@@ -12,7 +12,7 @@
                     <i class="fa-sharp fa-solid fa-plus"></i>
                     Create Payment
                 </Link>
-                <table class="table">
+                <table v-if="payments.length" class="table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
