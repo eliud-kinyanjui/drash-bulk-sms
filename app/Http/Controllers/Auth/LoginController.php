@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\NewUserRegistered;
 use App\Providers\RouteServiceProvider;
 use App\Traits\Utilities;
 use Exception;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
@@ -85,6 +87,9 @@ class LoginController extends Controller
                 'provider_id' => $providerUser->getId(),
                 'access_token' => $providerUser->token,
             ]);
+
+            Notification::route('slack', config('slack.newUserRegisteredWebhook'))
+                ->notify(new NewUserRegistered($user));
         }
 
         Auth::login($user);
