@@ -8,10 +8,7 @@
                 <div v-if="flash.status" class="alert alert-dismissible fade show text-center" :class="flash.status.type" role="alert">
                     {{ flash.status.message }}
                 </div>
-                <Link :href="route('payments.create')" class="btn btn-primary mb-3">
-                    <i class="fa-sharp fa-solid fa-plus"></i>
-                    Create Payment
-                </Link>
+
                 <table v-if="payments.length" class="table">
                     <thead>
                         <tr>
@@ -19,7 +16,12 @@
                             <th scope="col">Receipt #</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Amount</th>
-                            <th scope="col">Paid At</th>
+                            <th scope="col">
+                                <Link :href="route('payments.create')" class="btn btn-sm btn-primary">
+                                    <i class="fa-sharp fa-solid fa-plus"></i>
+                                    New Payment
+                                </Link>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,7 +30,7 @@
                             <td>{{ payment.receipt }}</td>
                             <td>{{ payment.phone}}</td>
                             <td>KES {{ payment.amount}}</td>
-                            <td>{{ payment.created_at }}</td>
+                            <td>Paid {{ payment.created_at }}</td>
                         </tr>
                     </tbody>
                 </table>

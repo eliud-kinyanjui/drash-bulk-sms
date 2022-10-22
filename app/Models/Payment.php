@@ -30,7 +30,7 @@ class Payment extends Model
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d-m-Y @ h:i A'),
+            get: fn ($value) => Carbon::parse($value)->diffForHumans(),
         );
     }
 }
