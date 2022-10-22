@@ -21,13 +21,12 @@ class Payment extends Model
         'date',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:d-m-Y @ h:i A',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->format('d-m-Y @ h:i A');
     }
 }
