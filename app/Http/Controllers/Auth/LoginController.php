@@ -111,7 +111,7 @@ class LoginController extends Controller
     {
         return redirect()->route('login')->with('status', [
             'type' => 'alert-danger',
-            'message' => $message ?: 'Unable to login, try with another provider to login.',
+            'message' => $message ?: 'Unable to login, kindly try again.',
         ]);
     }
 }
