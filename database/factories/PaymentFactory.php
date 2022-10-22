@@ -22,7 +22,7 @@ class PaymentFactory extends Factory
             'merchant' => fake()->uuid(),
             'checkout' => fake()->uuid(),
             'receipt' => fake()->uuid(),
-            'phone' => '07'.fake()->randomNumber(8, true),
+            'phone' => '2547'.fake()->randomNumber(8, true),
             'amount' => fake()->randomNumber(2, true),
             'date' => fake()->unixTime(),
         ];
