@@ -68,7 +68,7 @@ export default {
                 value.receipt,
                 value.phone,
                 value.amount,
-                'Paid '+value.created_at,
+                `Received ${value.created_at}`,
             ]);
         });
 
