@@ -103,6 +103,11 @@ class PaymentController extends Controller
                                 'date' => $meta['transactionDate'],
                             ]);
 
+                            $user->update([
+                                'credit' => $user->credit + $meta['amount'],
+                                'credit_updated_at' => now(),
+                            ]);
+
                             $paymentRequest->delete();
 
                             MpesaCallbackSaved::dispatch($user, $payment);

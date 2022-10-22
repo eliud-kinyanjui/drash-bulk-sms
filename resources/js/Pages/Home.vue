@@ -28,6 +28,16 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card border border-primary">
+                    <div class="card-body">
+                        <div class="text-center">
+                            Credit <br>
+                            <span class="display-6">KES {{ auth.user.credit }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>

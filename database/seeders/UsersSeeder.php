@@ -40,11 +40,16 @@ class UsersSeeder extends Seeder
                     'user_id' => $user->id,
                 ]);
 
-            Payment::factory()
+            $payments = Payment::factory()
                 ->count(10)
                 ->create([
                     'user_id' => $user->id,
                 ]);
+
+            $user->update([
+                'credit' => $payments->sum('amount'),
+                'credit_updated_at' => now(),
+            ]);
         }
     }
 }
