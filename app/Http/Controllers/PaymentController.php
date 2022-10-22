@@ -19,11 +19,9 @@ class PaymentController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-        $payments = $user->payments()->latest()->get();
+        $payments = Auth::user()->payments()->latest()->get();
 
         return Inertia::render('Payments/Index', [
-            'user' => $user,
             'payments' => $payments,
         ]);
     }

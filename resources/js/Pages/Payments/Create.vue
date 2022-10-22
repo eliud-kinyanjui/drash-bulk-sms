@@ -1,10 +1,10 @@
 <template>
-    <Head title="Create Payment" />
+    <Head title="New Payment" />
 
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-12 col-md-4">
-                <h1 class="text-center">Create Payment</h1>
+                <h1 class="text-center">New Payment</h1>
                 <form @submit.prevent="submit">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Amount</label>
@@ -16,7 +16,7 @@
                         <input id="phone" name="phone" type="text" class="form-control" placeholder="Enter Phone" v-model="form.phone">
                         <span v-if="form.errors.phone" v-text="form.errors.phone" class="text-danger text-sm"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">Create Payment</button>
+                    <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">Send Payment Request</button>
                 </form>
             </div>
         </div>
