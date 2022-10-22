@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Contact;
 use App\Models\ContactGroup;
+use App\Models\Payment;
 use App\Models\User;
 use App\Traits\Utilities;
 use Illuminate\Database\Seeder;
@@ -21,18 +22,26 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::create([
-            'uuid' => $this->generateUuid(),
-            'name' => 'Ndirangu Waweru',
-            'email' => 'ndiranguwaweru@gmail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-        ]);
+        $user = User::firstOrCreate(
+            ['email' => 'ndiranguwaweru@gmail.com'],
+            [
+                'uuid' => $this->generateUuid(),
+                'name' => 'Ndirangu Waweru',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+            ]
+        );
 
         if (App::environment('local')) {
             ContactGroup::factory()
                 ->count(5)
                 ->has(Contact::factory()->count(10))
+                ->create([
+                    'user_id' => $user->id,
+                ]);
+
+            Payment::factory()
+                ->count(10)
                 ->create([
                     'user_id' => $user->id,
                 ]);
