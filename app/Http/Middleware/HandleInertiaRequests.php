@@ -40,6 +40,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        if ($request->user()) {
+            $firstNameArray = explode(' ', $request->user()->name);
+        }
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'canLogin' => Route::has('login'),
@@ -48,6 +52,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user() ? [
                     'uuid' => $request->user()->uuid,
                     'name' => $request->user()->name,
+                    'firstName' => $firstNameArray[0],
+                    'credit' => $request->user()->credit,
                 ] : null,
             ],
             'env' => [

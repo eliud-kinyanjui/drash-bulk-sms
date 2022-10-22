@@ -4,10 +4,7 @@
     <div class="container">
         <div class="row mt-5">
             <div class="col-md-12 text-center">
-                <h1>
-                    {{ auth.user.name }}, <br>
-                    welcome!
-                </h1>
+                <h1>Welcome home, {{ auth.user.firstName }}</h1>
             </div>
         </div>
         <div class="row justify-content-center mt-5">
@@ -27,6 +24,16 @@
                         <div class="text-center">
                             Messages <br>
                             <span class="display-6">{{ stats.messages }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border border-primary">
+                    <div class="card-body">
+                        <div class="text-center">
+                            Credit <br>
+                            <span class="display-6">KES {{ auth.user.credit }}</span>
                         </div>
                     </div>
                 </div>

@@ -76,7 +76,13 @@ export default {
             .listen('MpesaCallbackSaved', (e) => {
                 let payment = e.payment;
 
-                this.payments.unshift(payment);
+                this.tableData.unshift([
+                    0,
+                    payment.receipt,
+                    payment.phone,
+                    payment.amount,
+                    `Received ${payment.created_at}`,
+                ]);
 
                 this.flash.status = {
                     'type': 'alert-success',
