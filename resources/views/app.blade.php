@@ -9,7 +9,7 @@
         @vite('resources/sass/app.scss')
         @inertiaHead
     </head>
-    <body>
+    <body class="bg-white">
         @inertia
 
         <script src="https://kit.fontawesome.com/84e6af0da9.js" crossorigin="anonymous"></script>
