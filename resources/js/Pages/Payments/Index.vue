@@ -40,17 +40,17 @@
 <script>
 export default {
     props: {
-        user: Object,
+        auth: Object,
         payments: Object,
         flash: Object,
     },
 
     created() {
-        Echo.private(`users.${this.user.uuid}`)
+        Echo.private(`users.${this.auth.user.uuid}`)
             .listen('MpesaCallbackSaved', (e) => {
                 let payment = e.payment;
 
-                this.payments.push(payment);
+                this.payments.unshift(payment);
 
                 this.flash.status = {
                     'type': 'alert-success',
