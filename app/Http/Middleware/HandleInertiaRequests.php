@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -40,14 +41,17 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $firstNameArray = explode(' ', Auth::user()->name);
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'canLogin' => Route::has('login'),
                 'canRegister' => Route::has('register'),
                 'canResetPassword' => Route::has('password.request'),
-                'user' => $request->user() ? [
-                    'uuid' => $request->user()->uuid,
-                    'name' => $request->user()->name,
+                'user' => Auth::user() ? [
+                    'uuid' => Auth::user()->uuid,
+                    'name' => Auth::user()->name,
+                    'firstName' => $firstNameArray[0],
                 ] : null,
             ],
             'env' => [
