@@ -63,7 +63,7 @@ task('deploy:cleanup', function () {
     $keep = get('keep_releases');
     $sudo = get('cleanup_use_sudo') ? 'sudo' : '';
 
-    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
+    run('cd {{deploy_path}} && if [ -e release ]; then rm release; fi');
 
     if ($keep > 0) {
         foreach (array_slice($releases, $keep) as $release) {
