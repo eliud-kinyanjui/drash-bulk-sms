@@ -68,7 +68,7 @@ export default {
                 value.receipt,
                 value.phone,
                 value.amount,
-                value.created_at,
+                'Paid '+value.created_at,
             ]);
         });
 
