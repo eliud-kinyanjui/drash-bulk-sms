@@ -3,7 +3,7 @@
 namespace Deployer;
 
 require 'recipe/laravel.php';
-// require 'contrib/npm.php';
+require 'recipe/deploy/cleanup.php';
 require 'contrib/rsync.php';
 
 set('application', 'Drash Bulk SMS');
@@ -52,5 +52,24 @@ task('deploy', [
     'artisan:queue:restart',
     'deploy:publish',
 ]);
+
+desc('Cleanup old releases');
+
+set('cleanup_use_sudo', false);
+set('keep_releases', 5);
+
+task('deploy:cleanup', function () {
+    $releases = get('releases_list');
+    $keep = get('keep_releases');
+    $sudo = get('cleanup_use_sudo') ? 'sudo' : '';
+
+    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
+
+    if ($keep > 0) {
+        foreach (array_slice($releases, $keep) as $release) {
+            run("$sudo rm -rf {{deploy_path}}/releases/$release");
+        }
+    }
+});
 
 desc('End deploying the application.');
