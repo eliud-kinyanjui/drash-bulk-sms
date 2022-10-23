@@ -53,7 +53,7 @@ class PaymentController extends Controller
 
                 return redirect()->route('payments.index')->with('status', [
                     'type' => 'alert-success',
-                    'message' => 'A payment request of KSH '.$validData['amount'].' sent to '.$validData['phone'].'.',
+                    'message' => 'A payment request of KES '.$validData['amount'].' sent to '.$validData['phone'].'.',
                 ]);
             } catch (Exception $ex) {
                 Log::error($ex);
