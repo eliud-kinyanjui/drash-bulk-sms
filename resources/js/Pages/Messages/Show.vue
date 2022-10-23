@@ -11,13 +11,12 @@
                     </div>
                     <div class="col-6">
                         <p>
-                            Summary: <b>{{ message.at_response }}</b>
-                            <br>
-                            Contact Group:
+                            Sent to {{ message.total_sent }} recepients
+                            in
                             <Link v-if="!message.contact_group.deleted_at" :href="route('contactGroups.show', { contactGroupUuid: message.contact_group.uuid })" class="text-decoration-none">{{ message.contact_group.name }}</Link>
                             <span v-else>{{ message.contact_group.name }}</span>
                             <br>
-                            <i>Sent {{ message.created_at }}</i>
+                            {{ message.created_at }}
                         </p>
                     </div>
                 </div>
