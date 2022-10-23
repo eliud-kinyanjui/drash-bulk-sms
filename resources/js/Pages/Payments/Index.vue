@@ -93,7 +93,6 @@ export default {
 };
 </script>
 
-<style>
-@import 'bootstrap';
+<style scoped>
 @import 'datatables.net-bs5';
 </style>

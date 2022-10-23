@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +18,11 @@ class Message extends Model
         'at_response',
     ];
 
+    protected $appends = [
+        'total_sent',
+        'total_cost',
+    ];
+
     public function contactGroup()
     {
         return $this->belongsTo(ContactGroup::class);
@@ -27,8 +33,32 @@ class Message extends Model
         return $this->hasMany(MessageDetail::class);
     }
 
-    public function getCreatedAtAttribute($value)
+    protected function createdAt(): Attribute
     {
-        return Carbon::parse($value)->diffForHumans();
+        return Attribute::make(
+            get: fn ($value) => Carbon::parse($value)->diffForHumans(),
+        );
+    }
+
+    protected function totalSent(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                $attributesArray = explode(' ', $attributes['at_response']);
+
+                return $attributesArray[2];
+            },
+        );
+    }
+
+    protected function totalCost(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                $attributesArray = explode(' ', $attributes['at_response']);
+
+                return number_format($attributesArray[6], 2);
+            },
+        );
     }
 }

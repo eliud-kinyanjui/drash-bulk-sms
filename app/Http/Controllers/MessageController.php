@@ -61,11 +61,18 @@ class MessageController extends Controller
         $messageData = $result['data']->SMSMessageData;
 
         DB::transaction(function () use ($contactGroup, $validData, $messageData) {
-            $message = Auth::user()->messages()->create([
+            $user = Auth::user();
+
+            $message = $user->messages()->create([
                 'uuid' => $this->generateUuid(),
                 'contact_group_id' => $contactGroup->id,
                 'message' => $validData['message'],
                 'at_response' => $messageData->Message,
+            ]);
+
+            $user->update([
+                'credit' => $user->credit - $message->total_cost,
+                'credit_updated_at' => now(),
             ]);
 
             $messageDetails = collect($messageData->Recipients)->map(function ($recipient) use ($message) {
