@@ -35,7 +35,7 @@ class UsersSeeder extends Seeder
         if (App::environment('local')) {
             ContactGroup::factory()
                 ->count(5)
-                ->has(Contact::factory()->count(10))
+                ->has(Contact::factory()->count(20))
                 ->create([
                     'user_id' => $user->id,
                 ]);
