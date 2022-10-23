@@ -5,6 +5,7 @@
         <div class="row">
             <div class="col-12">
                 <h1>Messages</h1>
+                <p>Credit: <b>KES: {{ auth.user.credit }}</b></p>
                 <Link :href="route('messages.create')" class="btn btn-primary mb-3">
                     <i class="fa-regular fa-paper-plane"></i>
                     Send Message
@@ -37,7 +38,8 @@
 <script>
 export default {
     props: {
-        messages: Object
+        auth: Object,
+        messages: Object,
     }
 }
 </script>
