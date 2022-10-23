@@ -18,4 +18,16 @@ trait Utilities
 
         return $uuid->toString();
     }
+
+    /**
+     * Extract message cost from AfricasTalking.
+     *
+     * @return float
+     */
+    public function extractMessageCost($message)
+    {
+        $messageArray = explode(' ', $message);
+
+        return number_format($messageArray[6], 2);
+    }
 }

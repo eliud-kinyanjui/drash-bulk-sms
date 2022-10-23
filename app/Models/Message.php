@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Utilities;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    use HasFactory;
+    use HasFactory, Utilities;
 
     protected $fillable = [
         'uuid',
@@ -54,11 +55,7 @@ class Message extends Model
     protected function totalCost(): Attribute
     {
         return Attribute::make(
-            get: function ($value, $attributes) {
-                $attributesArray = explode(' ', $attributes['at_response']);
-
-                return number_format($attributesArray[6], 2);
-            },
+            get: fn ($value, $attributes) => $this->extractMessageCost($attributes['at_response']),
         );
     }
 }

@@ -5,6 +5,9 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
                 <h1 class="text-center mt-5">Send Message</h1>
+                <div v-if="flash.status" class="alert alert-dismissible fade show text-center" :class="flash.status.type" role="alert">
+                    {{ flash.status.message }}
+                </div>
                 <form @submit.prevent="submit">
                     <div class="mb-3">
                         <label for="contact_group" class="form-label">Contact Group</label>
@@ -31,7 +34,8 @@
 <script>
 export default {
     props: {
-        contactGroups: Object
+        flash: Object,
+        contactGroups: Object,
     },
 
     data() {
