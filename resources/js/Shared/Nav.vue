@@ -23,11 +23,15 @@
                                 {{ auth.user.name }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><Link class="dropdown-item" :href="route('payments.index')">Payments</Link></li>
+                                <li>
+                                    <Link class="dropdown-item m-0" :href="route('payments.index')">Payments</Link>
+                                </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><Link class="dropdown-item" :href="route('users.edit', { userUuid: auth.user.uuid})">Edit Profile</Link></li>
+                                <li>
+                                    <Link class="dropdown-item m-0" :href="route('users.edit', { userUuid: auth.user.uuid})">Edit Profile</Link>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item">
