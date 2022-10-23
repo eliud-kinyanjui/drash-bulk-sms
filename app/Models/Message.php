@@ -18,7 +18,10 @@ class Message extends Model
         'at_response',
     ];
 
-    protected $appends = ['total_sent'];
+    protected $appends = [
+        'total_sent',
+        'total_cost',
+    ];
 
     public function contactGroup()
     {
@@ -44,6 +47,17 @@ class Message extends Model
                 $attributesArray = explode(' ', $attributes['at_response']);
 
                 return $attributesArray[2];
+            },
+        );
+    }
+
+    protected function totalCost(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                $attributesArray = explode(' ', $attributes['at_response']);
+
+                return number_format($attributesArray[6], 2);
             },
         );
     }
