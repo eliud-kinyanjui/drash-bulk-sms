@@ -22,7 +22,7 @@
                         </p>
                     </div>
                 </div>
-                <table class="table">
+                <DataTable :data="tableData" class="table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -31,24 +31,46 @@
                             <th scope="col">Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr v-for="(detail, index) in message.message_details" :key="detail.id">
-                            <th scope="row">{{ ++index }}</th>
-                            <td>{{ detail.at_number }}</td>
-                            <td>{{ detail.at_cost}}</td>
-                            <td>{{ detail.at_status }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                </DataTable>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import DataTable from 'datatables.net-vue3';
+import DataTableBs5 from 'datatables.net-bs5';
+
+DataTable.use(DataTableBs5);
+
 export default {
+    components: {
+        DataTable,
+    },
+
     props: {
         message: Object,
+    },
+
+    data() {
+        return {
+            tableData: [],
+        };
+    },
+
+    created() {
+        this.message.message_details.forEach((value, index) => {
+            this.tableData.push([
+                ++index,
+                value.at_number,
+                value.at_cost,
+                value.at_status,
+            ]);
+        });
     }
 };
 </script>
+
+<style scoped>
+@import 'datatables.net-bs5';
+</style>
