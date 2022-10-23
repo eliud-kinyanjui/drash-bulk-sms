@@ -2,8 +2,10 @@
     <Head title="Welcome" />
 
     <div class="container">
-        <div class="row vh-100 align-items-center">
+        <div class="row">
             <div class="col-12 text-center">
+                <div class="py-5"></div>
+                <div class="py-5"></div>
                 <h1>Welcome to {{ env.APP_NAME }}</h1>
             </div>
         </div>
