@@ -63,7 +63,7 @@ export default {
             this.tableData.push([
                 ++index,
                 value.at_number,
-                value.at_cost,
+                `KES ${value.cost}`,
                 value.at_status,
             ]);
         });
