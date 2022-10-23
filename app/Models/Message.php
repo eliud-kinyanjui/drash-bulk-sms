@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,8 +28,10 @@ class Message extends Model
         return $this->hasMany(MessageDetail::class);
     }
 
-    public function getCreatedAtAttribute($value)
+    protected function createdAt(): Attribute
     {
-        return Carbon::parse($value)->diffForHumans();
+        return Attribute::make(
+            get: fn ($value) => Carbon::parse($value)->diffForHumans(),
+        );
     }
 }
