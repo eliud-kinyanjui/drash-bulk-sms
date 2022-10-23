@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class MessageDetail extends Model
 {
@@ -17,4 +18,17 @@ class MessageDetail extends Model
         'at_status',
         'at_message_id',
     ];
+
+    protected $appends = ['cost'];
+
+    protected function cost(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                $atCostArray = explode(' ', $attributes['at_cost']);
+
+                return number_format($atCostArray[1], 2);
+            }
+        );
+    }
 }

@@ -50,19 +50,24 @@ class MessageController extends Controller
             $contacts[] = substr_replace($contact->phone, '+254', 0, 1);
         }
 
-        $AT = new AfricasTalking(config('africastalking.username'), config('africastalking.apiKey'));
-        $sms = $AT->sms();
-
-        $result = $sms->send([
+        $data = [
             'to' => $contacts,
             'message' => $validData['message'],
-        ]);
+        ];
 
-        $messageData = $result['data']->SMSMessageData;
+        $totalCost = $this->getTotalCost($data);
+        $user = Auth::user();
 
-        DB::transaction(function () use ($contactGroup, $validData, $messageData) {
-            $user = Auth::user();
+        if ($totalCost > $user->credit) {
+            return redirect()->back()->with('status', [
+                'type' => 'alert-danger',
+                'message' => 'You need at least KES '.$totalCost.' credit to send this message. Kindly top up.',
+            ]);
+        }
 
+        $messageData = $this->sendSMS($data);
+
+        DB::transaction(function () use ($user, $contactGroup, $validData, $messageData) {
             $message = $user->messages()->create([
                 'uuid' => $this->generateUuid(),
                 'contact_group_id' => $contactGroup->id,
@@ -108,5 +113,24 @@ class MessageController extends Controller
         return Inertia::render('Messages/Show', [
             'message' => $message,
         ]);
+    }
+
+    private function sendSMS($data)
+    {
+        $AT = new AfricasTalking(config('africastalking.username'), config('africastalking.apiKey'));
+        $sms = $AT->sms();
+
+        $result = $sms->send($data);
+
+        return $result['data']->SMSMessageData;
+    }
+
+    private function getTotalCost($data)
+    {
+        config(['africastalking.username' => 'sandbox']);
+
+        $messageData = $this->sendSMS($data);
+
+        return $this->extractMessageCost($messageData->Message);
     }
 }
