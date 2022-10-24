@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Storage;
-use Spatie\FlysystemDropbox\DropboxAdapter;
-use Spatie\Dropbox\Client as DropboxClient;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Filesystem;
+use Spatie\Dropbox\Client as DropboxClient;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 
 class DropboxServiceProvider extends ServiceProvider
 {
