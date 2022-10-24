@@ -38,7 +38,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <Link class="nav-link" :href="route('logout')" method="post" as="button">Logout</Link>
+                                <Link class="nav-link btn btn-default" :href="route('logout')" method="post" as="button">Logout</Link>
                             </li>
                         </template>
 
