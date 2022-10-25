@@ -8,31 +8,33 @@
                 <div v-if="flash.status" class="alert alert-dismissible fade show text-center" :class="flash.status.type" role="alert">
                     {{ flash.status.message }}
                 </div>
-                <DataTable
-                    :data="tableData"
-                    :options="{
-                         'columnDefs': [{
-                            'targets': [1, 4],
-                            'orderable': false,
-                        }]
-                    }"
-                    class="table"
-                >
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Receipt #</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">
-                                <Link :href="route('payments.create')" class="btn btn-sm btn-primary">
-                                <i class="fa-sharp fa-solid fa-plus"></i>
-                                New Payment
-                                </Link>
-                            </th>
-                        </tr>
-                    </thead>
-                </DataTable>
+                <div class="table-responsive">
+                    <DataTable
+                        :data="tableData"
+                        :options="{
+                                'columnDefs': [{
+                                'targets': [1, 4],
+                                'orderable': false,
+                            }]
+                        }"
+                        class="table"
+                    >
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Receipt #</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">
+                                    <Link :href="route('payments.create')" class="btn btn-sm btn-primary">
+                                    <i class="fa-sharp fa-solid fa-plus"></i>
+                                    New Payment
+                                    </Link>
+                                </th>
+                            </tr>
+                        </thead>
+                    </DataTable>
+                </div>
             </div>
         </div>
     </div>
