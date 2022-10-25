@@ -8,7 +8,7 @@
                 <div v-if="flash.status" class="alert alert-dismissible fade show text-center" :class="flash.status.type" role="alert">
                     {{ flash.status.message }}
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive-sm">
                     <DataTable
                         :data="tableData"
                         :options="{
