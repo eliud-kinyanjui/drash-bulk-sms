@@ -27,6 +27,10 @@ class MessageDetail extends Model
             get: function ($value, $attributes) {
                 $atCostArray = explode(' ', $attributes['at_cost']);
 
+                if (count($atCostArray) !== 2) {
+                    return '0';
+                }
+
                 return number_format($atCostArray[1], 2);
             }
         );
