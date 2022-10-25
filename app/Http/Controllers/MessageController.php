@@ -67,7 +67,7 @@ class MessageController extends Controller
 
         $messageData = $this->sendSMS($data);
 
-        DB::transaction(function () use ($user, $contactGroup, $validData, $messageData) {
+        $message = DB::transaction(function () use ($user, $contactGroup, $validData, $messageData) {
             $message = $user->messages()->create([
                 'uuid' => $this->generateUuid(),
                 'contact_group_id' => $contactGroup->id,
@@ -94,9 +94,11 @@ class MessageController extends Controller
             });
 
             $message->messageDetails()->insert($messageDetails->toArray());
+
+            return $message;
         });
 
-        return redirect()->route('messages.index');
+        return redirect()->route('messages.show', ['messageUuid' => $message->uuid]);
     }
 
     public function show($messageUuid)
