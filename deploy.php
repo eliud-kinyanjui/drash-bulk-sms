@@ -56,7 +56,7 @@ task('deploy', [
 desc('Cleanup old releases');
 
 set('cleanup_use_sudo', false);
-set('keep_releases', 5);
+set('keep_releases', 3);
 
 task('deploy:cleanup', function () {
     $releases = get('releases_list');
